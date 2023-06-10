@@ -1,0 +1,103 @@
+#include <iostream>
+using namespace std;
+template <class T>
+class nodo
+{
+  public:
+  T valor;
+  nodo<T>* next;
+  nodo<T>(T v, nodo<T>* n=nullptr)
+  { 
+    valor = v;
+    next = n;
+  }
+};
+template <class T>
+class LCE
+{
+  nodo<T> *head=nullptr;
+  public:
+  void print();
+  bool find(T v,nodo<T> *&pos);
+  void add(T v);
+  void del(T v);
+};
+template <class T>
+void LCE<T>::print()
+{
+  nodo<T>* p = head;
+  cout << "Head->";
+  if(p)
+    {
+      for(;p->next != head; p = p->next) cout<<p->valor<<"->";
+      cout<<p->valor<<"->";
+    }
+  cout << "Head" << endl;  
+}
+template <class T>
+bool LCE<T>::find(T v, nodo<T> *&pos)
+{
+  nodo<T>*p = head;
+  pos = nullptr;
+  bool encontrado = false;
+  for(;p->next!=head && p->valor<=v;p=p->next)
+  {
+    if(p->valor==v) encontrado = true;
+    pos = p;
+  }
+   
+  if(p->valor==v) encontrado = true;
+  return encontrado;
+}
+template <class T>
+void LCE<T>::add(T v)
+{
+  nodo<T>*p = head;
+  nodo<T>* pos_ant;
+  if(head==nullptr)
+  {
+    head = new nodo<T>(v);
+    head->next = head;
+  }
+  if(!find(v,pos_ant))
+  {
+      if(!pos_ant)
+      {
+        if(p->valor<v) //hay un solo elemento
+          head->next = new nodo<T>(v,head);
+        else{
+          for(;p->next != head;) p=p->next;
+          head = new nodo<T>(v,head);
+          p->next = head;
+        }
+      }
+     else{
+       pos_ant = pos_ant->next;
+       pos_ant->next=new nodo<T>(v,pos_ant->next);
+     }
+    }
+  
+}
+//template <class T>
+/*void LCE<T>::del(T v)
+{
+  nodo<T> *pos_ant,*pos_del;
+  if(find(v,pos_ant))
+  {
+    if(pos_ant)
+    {
+      pos_del = pos_ant->next;
+      pos_ant->next = pos_del->next; //pos_ant->next = pos_ant->next->next;
+      delete pos_del;
+    }
+    else
+    {
+      pos_del = head;
+      head = pos_del->next; //head = head->next;
+      delete pos_del;
+    }
+  }
+}*/
+int main() {
+ 
+}
